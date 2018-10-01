@@ -1,7 +1,7 @@
 ---
 title: Python Decorators
 ---
-Decorators essentially work as wrappers. They modify the behaviour of the code before and after a target function execution, without the need to modify the function itself, augmenting the original functionality, thus decorating it.
+Decorators essentially work as wrappers.Decorators can be thought of as functions which modify the functionality of another function. They help to make your code shorter and more "Pythonic". They modify the behaviour of the code before and after a target function execution, without the need to modify the function itself, augmenting the original functionality, thus decorating it.
 
 Before going in detail about decorators, there are some concepts that should be clear. In Python, functions are objects and we can do a lot of useful stuff with them.
 
@@ -74,7 +74,37 @@ Output: Hello there!
 
 ## Composition of Decorators
 
-Function decorators are simply wrappers to existing functions. Putting the ideas mentioned above together, we can build a decorator. In this example let's consider a function that wraps the string output of another function by p tags.
+Function decorators are simply wrappers to existing functions. Putting the ideas mentioned above together, we can build a decorator. In this example we are creating a decorator manually.  
+
+    def new_decorator(func):
+
+    def wrap_func():
+        print "Code would be here, before executing the func"
+
+        func()
+
+        print "Code here will execute after the func()"
+
+    return wrap_func
+    
+    def func_needs_decorator():
+        print "This function is in need of a Decorator"
+    
+    func_needs_decorator()
+> Output: This function is in need of a Decorator
+
+Now, reassigning func_needs_decorator
+  
+    func_needs_decorator=new_decorator(func_needs_decorator)
+    func_needs_decorator()
+    
+> Output: Code would be here, before executing the func
+          This function is in need of a Decorator
+          Code here will execute after the func()
+
+That was our first decorator. A function that takes another function as an argument, generates a new function, augmenting the work of the original function, and returning the generated function so we can use it anywhere. To have `func_needs_decorator` itself be decorated by `new_decorator`, we just have to assign func_needs_decorator to the result of new_decorator.  
+
+Let's consider another example, let's consider a function that wraps the string output of another function by p tags.
 
     def get_text(name):
        return "lorem ipsum, {0} dolor sit amet".format(name)
